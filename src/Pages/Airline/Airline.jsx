@@ -1,8 +1,9 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import SearchArea from "../Airline/MainSearch/SearchArea";
 import RecentSearch from "../Airline/RecentSearch/RecentSearch";
 import SlideCard from "../Airline/SlideCard/SlideCard";
+import CounterContainer from "../../containers/CounterContainer";
 import styled from "styled-components";
 
 class Airline extends React.Component {
@@ -17,6 +18,7 @@ class Airline extends React.Component {
         <SearchArea />
         <RecentSearch />
         <SlideCard />
+        <CounterContainer />
       </BodyWrapper>
     );
   }

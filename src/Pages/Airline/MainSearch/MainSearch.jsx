@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import AirCalendar from "../Modal/AirlineCalendar/AirCalendar";
 import CityModal from "../Modal/CityModal";
-import SeatModal from "../Modal/SeatModal";
+import SeatContainer from "../../../containers/SeatContainer";
 import moment from "moment";
 import "moment/locale/ko";
 import styled from "styled-components";
@@ -18,6 +18,9 @@ const PASS_TYPE = {
   childNum: "child",
   infantNum: "infant",
 };
+// const { adultNum, childrenNum, infantNum } = useSelector(
+//   (state) => state.seat
+// );
 
 class MainSearch extends React.Component {
   constructor() {
@@ -27,14 +30,13 @@ class MainSearch extends React.Component {
       openCityModal: false,
       openSeatModal: false,
       openCalendarLayer: false,
-      adult: 1,
-      child: 0,
-      infant: 0,
       passengerNum: 0,
       depPlace: "",
       arrPlace: "",
       startDate: "",
       endDate: "",
+      depModal: false,
+      arrModal: false,
     };
   }
 
@@ -48,18 +50,35 @@ class MainSearch extends React.Component {
     return modalStateObj[id];
   };
 
-  showModal = (id) => {
+  showModal = (id, type) => {
     const stateName = MODAL_NAME[id];
     this.setState({
       [stateName]: this.handleModalState(id),
     });
+    if (type === "dep") {
+      this.setState({
+        depModal: !this.state.depModal,
+      });
+    } else if (type === "arr") {
+      this.setState({
+        arrModal: !this.state.arrModal,
+      });
+    }
   };
 
-  handleDepValue = (e) => {
-    this.setState({
-      depPlace: e.target.innerText,
-    });
-    this.showModal("city");
+  handleDepValue = (type, city) => {
+    console.log(type, city);
+    if (type === "arr") {
+      this.setState({
+        arrPlace: city,
+        arrModal: !this.state.arrModal,
+      });
+    } else {
+      this.setState({
+        depPlace: city,
+        depModal: !this.state.depModal,
+      });
+    }
   };
 
   DecreasePassNum = (id) => {
@@ -114,6 +133,8 @@ class MainSearch extends React.Component {
       openSeatModal,
       openCityModal,
       openCalendarLayer,
+      depModal,
+      arrModal,
       arrPlace,
       depPlace,
       adult,
@@ -126,27 +147,38 @@ class MainSearch extends React.Component {
         <CitySelector>
           <input
             type="text"
+            id="departure"
             placeholder="김포(GMP)"
-            value={arrPlace}
-            onClick={() => this.showModal("city")}
+            value={depPlace}
+            onClick={() => this.showModal("city", "dep")}
           />
+          {depModal && (
+            <CityModal
+              departure
+              depPlace={depPlace}
+              handleDepValue={this.handleDepValue}
+              onClickToCancel={() => this.showModal("city", "dep")}
+            />
+          )}
           <button>
             <i class="fas fa-arrows-alt-h" />
           </button>
           <input
             type="text"
+            id="arrival"
             placeholder="도착지가 어디인가요?"
-            value={depPlace}
-            onClick={() => this.showModal("city")}
+            value={arrPlace}
+            onClick={() => this.showModal("city", "arr")}
           />
+          {arrModal && (
+            <CityModal
+              arrival
+              arrPlace={arrPlace}
+              handleDepValue={this.handleDepValue}
+              onClickToCancel={() => this.showModal("city", "arr")}
+            />
+          )}
         </CitySelector>
-        {openCityModal && (
-          <CityModal
-            depPlace={depPlace}
-            handleDepValue={this.handleDepValue}
-            showModal={this.showModal}
-          />
-        )}
         <div onClick={() => this.showModal("cal")}>
           <AirCalendar openCalendarLayer={openCalendarLayer} />
         </div>
@@ -163,16 +195,7 @@ class MainSearch extends React.Component {
             </button>
           </SeatTitle>
         </SeatSelector>
-        {openSeatModal && (
-          <SeatModal
-            showModal={this.showModal}
-            adult={adult}
-            child={child}
-            infant={infant}
-            DecreasePassNum={this.DecreasePassNum}
-            IncreasePassNum={this.IncreasePassNum}
-          />
-        )}
+        {openSeatModal && <SeatContainer showModal={this.showModal} />}
       </Selectors>
     );
   }

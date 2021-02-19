@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
 const SeatModal = ({
   showModal,
-  DecreasePassNum,
-  IncreasePassNum,
-  adult,
-  child,
-  infant,
+  adultNum,
+  childrenNum,
+  infantNum,
+  onIncreaseAdultNum,
+  onIncreaseChildrenNum,
+  onIncreaseInfantNum,
+  onDecreaseAdultNum,
+  onDecreaseChildrenNum,
+  onDecreaseInfantNum,
 }) => {
   return (
     <>
@@ -27,15 +31,9 @@ const SeatModal = ({
               <div>만 12세 이상</div>
             </Title>
             <Num>
-              <i
-                class="far fa-minus-square"
-                onClick={() => DecreasePassNum("adultNum")}
-              />
-              <span>{adult}</span>
-              <i
-                class="far fa-plus-square"
-                onClick={() => IncreasePassNum("adultNum")}
-              />
+              <i class="far fa-minus-square" onClick={onDecreaseAdultNum} />
+              <span>{adultNum}</span>
+              <i class="far fa-plus-square" onClick={onIncreaseAdultNum} />
             </Num>
           </List>
           <List>
@@ -44,15 +42,9 @@ const SeatModal = ({
               <div>만 12세 미만</div>
             </Title>
             <Num>
-              <i
-                class="far fa-minus-square"
-                onClick={() => DecreasePassNum("childNum")}
-              />
-              <span>{child}</span>
-              <i
-                class="far fa-plus-square"
-                onClick={() => IncreasePassNum("childNum")}
-              />
+              <i class="far fa-minus-square" onClick={onDecreaseChildrenNum} />
+              <span>{childrenNum}</span>
+              <i class="far fa-plus-square" onClick={onIncreaseChildrenNum} />
             </Num>
           </List>
           <List>
@@ -61,15 +53,9 @@ const SeatModal = ({
               <div>24개월 미만</div>
             </Title>
             <Num>
-              <i
-                class="far fa-minus-square"
-                onClick={() => DecreasePassNum("infantNum")}
-              />
-              <span>{infant}</span>
-              <i
-                class="far fa-plus-square"
-                onClick={() => IncreasePassNum("infantNum")}
-              />
+              <i class="far fa-minus-square" onClick={onDecreaseInfantNum} />
+              <span>{infantNum}</span>
+              <i class="far fa-plus-square" onClick={onIncreaseInfantNum} />
             </Num>
           </List>
         </Body>
