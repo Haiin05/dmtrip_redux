@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
 import AirCalendar from "../Modal/AirlineCalendar/AirCalendar";
 import CityModal from "../Modal/CityModal";
 import SeatContainer from "../../../containers/SeatContainer";
@@ -18,188 +19,83 @@ const PASS_TYPE = {
   childNum: "child",
   infantNum: "infant",
 };
-// const { adultNum, childrenNum, infantNum } = useSelector(
-//   (state) => state.seat
-// );
 
-class MainSearch extends React.Component {
-  constructor() {
-    super();
-    moment.locale("ko");
-    this.state = {
-      openCityModal: false,
-      openSeatModal: false,
-      openCalendarLayer: false,
-      passengerNum: 0,
-      depPlace: "",
-      arrPlace: "",
-      startDate: "",
-      endDate: "",
-      depModal: false,
-      arrModal: false,
-    };
-  }
+const MainSearch = () => {
+  const [cityModalStatus, setCityModalStatus] = useState({
+    dep: false,
+    arr: false,
+  });
+  const [seatModalStatus, setSeatModalStatus] = useState(false);
+  const [calendarModalStatus, setCalendarModalStatus] = useState(false);
 
-  handleModalState = (id) => {
-    const { openCityModal, openSeatModal, openCalendarLayer } = this.state;
-    const modalStateObj = {
-      city: !openCityModal,
-      seat: !openSeatModal,
-      cal: !openCalendarLayer,
-    };
-    return modalStateObj[id];
+  const { adultNum, childrenNum, infantNum } = useSelector(
+    (state) => state.seat
+  );
+
+  const handleCityValue = (type, city) => {
+    // if (type === "arr") {
+    //   this.setState({
+    //     arrPlace: city,
+    //     arrModal: !this.state.arrModal,
+    //   });
+    // } else {
+    //   this.setState({
+    //     depPlace: city,
+    //     depModal: !this.state.depModal,
+    //   });
+    // }
   };
 
-  showModal = (id, type) => {
-    const stateName = MODAL_NAME[id];
-    this.setState({
-      [stateName]: this.handleModalState(id),
-    });
-    if (type === "dep") {
-      this.setState({
-        depModal: !this.state.depModal,
-      });
-    } else if (type === "arr") {
-      this.setState({
-        arrModal: !this.state.arrModal,
-      });
-    }
-  };
-
-  handleDepValue = (type, city) => {
-    console.log(type, city);
-    if (type === "arr") {
-      this.setState({
-        arrPlace: city,
-        arrModal: !this.state.arrModal,
-      });
-    } else {
-      this.setState({
-        depPlace: city,
-        depModal: !this.state.depModal,
-      });
-    }
-  };
-
-  DecreasePassNum = (id) => {
-    const stateName = PASS_TYPE[id];
-    if (stateName === "child" || stateName === "infant") {
-      this.state[stateName] > 0 &&
-        this.setState({
-          [stateName]: this.handleDecreaseState(id),
-        });
-    } else if (stateName === "adult") {
-      this.state[stateName] > 1 &&
-        this.setState({
-          [stateName]: this.handleDecreaseState(id),
-        });
-    }
-  };
-
-  handleDecreaseState = (id) => {
-    const { adult, child, infant } = this.state;
-    const decreaseState = {
-      adultNum: adult - 1,
-      childNum: child - 1,
-      infantNum: infant - 1,
-    };
-    return decreaseState[id];
-  };
-
-  IncreasePassNum = (id) => {
-    const { adult, child, infant } = this.state;
-    const stateName = PASS_TYPE[id];
-    if (adult + child + infant < 9) {
-      this.setState({
-        [stateName]: this.handleIncreaseState(id),
-      });
-    } else {
-      alert("최대 9명까지만 예약 가능합니다.");
-    }
-  };
-
-  handleIncreaseState = (id) => {
-    const { adult, child, infant } = this.state;
-    const increaseState = {
-      adultNum: adult + 1,
-      childNum: child + 1,
-      infantNum: infant + 1,
-    };
-    return increaseState[id];
-  };
-
-  render() {
-    const {
-      openSeatModal,
-      openCityModal,
-      openCalendarLayer,
-      depModal,
-      arrModal,
-      arrPlace,
-      depPlace,
-      adult,
-      child,
-      infant,
-    } = this.state;
-
-    return (
-      <Selectors>
-        <CitySelector>
-          <input
-            type="text"
-            id="departure"
-            placeholder="김포(GMP)"
-            value={depPlace}
-            onClick={() => this.showModal("city", "dep")}
-          />
-          {depModal && (
-            <CityModal
-              departure
-              depPlace={depPlace}
-              handleDepValue={this.handleDepValue}
-              onClickToCancel={() => this.showModal("city", "dep")}
-            />
-          )}
+  return (
+    <Selectors>
+      <CitySelector>
+        <input
+          type="text"
+          id="departure"
+          placeholder="김포(GMP)"
+          onClick={() =>
+            setCityModalStatus({ dep: !cityModalStatus, arr: false })
+          }
+        />
+        {cityModalStatus.dep && <CityModal />}
+        <button>
+          <i class="fas fa-arrows-alt-h" />
+        </button>
+        <input
+          type="text"
+          id="arrival"
+          placeholder="도착지가 어디인가요?"
+          onClick={() =>
+            setCityModalStatus({ dep: false, arr: !cityModalStatus })
+          }
+        />
+        {cityModalStatus.arr && (
+          <CityModal arrival handleCityValue={handleCityValue} />
+        )}
+      </CitySelector>
+      <div onClick={() => setCalendarModalStatus(!calendarModalStatus)}>
+        <AirCalendar calendarModalStatus={calendarModalStatus} />
+      </div>
+      <SeatSelector>
+        <SeatTitle onClick={() => setSeatModalStatus(!seatModalStatus)}>
+          <div>
+            <i class="far fa-user" />
+            <span>승객 {adultNum + childrenNum + infantNum}명, 일반석</span>
+          </div>
           <button>
-            <i class="fas fa-arrows-alt-h" />
+            <i class="fas fa-chevron-down" />
           </button>
-          <input
-            type="text"
-            id="arrival"
-            placeholder="도착지가 어디인가요?"
-            value={arrPlace}
-            onClick={() => this.showModal("city", "arr")}
-          />
-          {arrModal && (
-            <CityModal
-              arrival
-              arrPlace={arrPlace}
-              handleDepValue={this.handleDepValue}
-              onClickToCancel={() => this.showModal("city", "arr")}
-            />
-          )}
-        </CitySelector>
-        <div onClick={() => this.showModal("cal")}>
-          <AirCalendar openCalendarLayer={openCalendarLayer} />
-        </div>
-        <SeatSelector>
-          <SeatTitle onClick={() => this.showModal("seat")}>
-            <div>
-              <i class="far fa-user" />
-              <span onChange={this.limitPassengerNum}>
-                승객 {adult + child + infant}명, 일반석
-              </span>
-            </div>
-            <button>
-              <i class="fas fa-chevron-down" />
-            </button>
-          </SeatTitle>
-        </SeatSelector>
-        {openSeatModal && <SeatContainer showModal={this.showModal} />}
-      </Selectors>
-    );
-  }
-}
+        </SeatTitle>
+      </SeatSelector>
+      {seatModalStatus && (
+        <SeatContainer
+          setSeatModalStatus={setSeatModalStatus}
+          seatModalStatus={seatModalStatus}
+        />
+      )}
+    </Selectors>
+  );
+};
 
 export default withRouter(MainSearch);
 

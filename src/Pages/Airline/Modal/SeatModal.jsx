@@ -3,7 +3,8 @@ import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
 const SeatModal = ({
-  showModal,
+  seatModalStatus,
+  setSeatModalStatus,
   adultNum,
   childrenNum,
   infantNum,
@@ -20,7 +21,7 @@ const SeatModal = ({
       <SeatModalWrapper>
         <Header>
           <h1>인원 & 좌석등급</h1>
-          <button onClick={() => showModal("seat")}>
+          <button onClick={() => setSeatModalStatus(!seatModalStatus)}>
             <i class="fas fa-times" />
           </button>
         </Header>
