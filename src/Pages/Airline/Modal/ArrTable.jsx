@@ -6,9 +6,8 @@ import styled from "styled-components";
 const ArrTable = ({
   departure,
   arrival,
-  arrPlace,
-  depPlace,
-  handleDepValue,
+  cityModalValue,
+  setCityModalValue,
   handleArrValue,
 }) => {
   const [tableList, gettableList] = useState([]);
@@ -24,14 +23,11 @@ const ArrTable = ({
   };
 
   const handleCityValue = (city) => {
-    if (departure) {
-      handleDepValue("dep", city);
-    } else {
-      handleDepValue("arr", city);
-    }
+    departure
+      ? setCityModalValue({ dep: city })
+      : setCityModalValue({ arr: city });
   };
 
-  console.log(departure, arrival);
   return (
     <ArrTableWrapper departure={departure} arrival={arrival}>
       {tableList?.map((location, index) => {

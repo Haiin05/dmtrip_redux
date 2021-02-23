@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import ArrTable from "./ArrTable";
 import styled from "styled-components";
@@ -7,19 +6,24 @@ import styled from "styled-components";
 const CityModal = ({
   arrival,
   departure,
-  showModal,
-  onClickToCancel,
-  arrPlace,
-  depPlace,
-  handleDepValue,
+  setCityModalStatus,
+  cityModalStatus,
+  cityModalValue,
+  setCityModalValue,
 }) => {
+  const closeModal = () => {
+    departure
+      ? setCityModalStatus(!cityModalStatus.dep)
+      : setCityModalStatus(!cityModalStatus.arr);
+  };
+
   return (
     <>
       <ModalLayer />
       <CitySearchModal arrival={arrival} departure={departure}>
         <div className="modalTitle">
           <h4>도시 선택</h4>
-          <button onClick={onClickToCancel}>
+          <button onClick={closeModal}>
             <i class="fas fa-times" />
           </button>
         </div>
@@ -33,9 +37,8 @@ const CityModal = ({
             <ArrTable
               departure={departure}
               arrival={arrival}
-              depPlace={depPlace}
-              arrPlace={arrPlace}
-              handleDepValue={handleDepValue}
+              cityModalValue={cityModalValue}
+              setCityModalValue={setCityModalValue}
             />
           </CityArea>
         </ModalBox>

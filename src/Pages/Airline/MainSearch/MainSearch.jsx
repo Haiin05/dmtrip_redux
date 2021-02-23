@@ -8,22 +8,14 @@ import moment from "moment";
 import "moment/locale/ko";
 import styled from "styled-components";
 
-const MODAL_NAME = {
-  city: "openCityModal",
-  seat: "openSeatModal",
-  cal: "openCalendarLayer",
-};
-
-const PASS_TYPE = {
-  adultNum: "adult",
-  childNum: "child",
-  infantNum: "infant",
-};
-
 const MainSearch = () => {
   const [cityModalStatus, setCityModalStatus] = useState({
     dep: false,
     arr: false,
+  });
+  const [cityModalValue, setCityModalValue] = useState({
+    dep: "",
+    arr: "",
   });
   const [seatModalStatus, setSeatModalStatus] = useState(false);
   const [calendarModalStatus, setCalendarModalStatus] = useState(false);
@@ -32,20 +24,6 @@ const MainSearch = () => {
     (state) => state.seat
   );
 
-  const handleCityValue = (type, city) => {
-    // if (type === "arr") {
-    //   this.setState({
-    //     arrPlace: city,
-    //     arrModal: !this.state.arrModal,
-    //   });
-    // } else {
-    //   this.setState({
-    //     depPlace: city,
-    //     depModal: !this.state.depModal,
-    //   });
-    // }
-  };
-
   return (
     <Selectors>
       <CitySelector>
@@ -53,11 +31,18 @@ const MainSearch = () => {
           type="text"
           id="departure"
           placeholder="김포(GMP)"
-          onClick={() =>
-            setCityModalStatus({ dep: !cityModalStatus, arr: false })
-          }
+          value={cityModalValue.dep}
+          onClick={() => setCityModalStatus({ dep: !cityModalStatus.dep })}
         />
-        {cityModalStatus.dep && <CityModal />}
+        {cityModalStatus.dep && (
+          <CityModal
+            departure
+            cityModalStatus={cityModalStatus}
+            setCityModalStatus={setCityModalStatus}
+            cityModalValue={cityModalValue}
+            setCityModalValue={setCityModalValue}
+          />
+        )}
         <button>
           <i class="fas fa-arrows-alt-h" />
         </button>
@@ -65,12 +50,17 @@ const MainSearch = () => {
           type="text"
           id="arrival"
           placeholder="도착지가 어디인가요?"
-          onClick={() =>
-            setCityModalStatus({ dep: false, arr: !cityModalStatus })
-          }
+          value={cityModalValue.arr}
+          onClick={() => setCityModalStatus({ arr: !cityModalStatus.arr })}
         />
         {cityModalStatus.arr && (
-          <CityModal arrival handleCityValue={handleCityValue} />
+          <CityModal
+            arrival
+            cityModalStatus={cityModalStatus}
+            setCityModalStatus={setCityModalStatus}
+            cityModalValue={cityModalValue}
+            setCityModalValue={setCityModalValue}
+          />
         )}
       </CitySelector>
       <div onClick={() => setCalendarModalStatus(!calendarModalStatus)}>
