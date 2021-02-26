@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
 const ArrTable = ({
   departure,
   arrival,
-  cityModalValue,
-  setCityModalValue,
-  handleArrValue,
+  handleArrivalCity,
+  handleDepartureCity,
 }) => {
   const [tableList, gettableList] = useState([]);
 
@@ -23,9 +22,7 @@ const ArrTable = ({
   };
 
   const handleCityValue = (city) => {
-    departure
-      ? setCityModalValue({ dep: city })
-      : setCityModalValue({ arr: city });
+    departure ? handleDepartureCity(city) : handleArrivalCity(city);
   };
 
   return (

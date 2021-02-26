@@ -4,8 +4,6 @@ import { useSelector } from "react-redux";
 import AirCalendar from "../Modal/AirlineCalendar/AirCalendar";
 import CityModal from "../Modal/CityModal";
 import SeatContainer from "../../../containers/SeatContainer";
-import moment from "moment";
-import "moment/locale/ko";
 import styled from "styled-components";
 
 const MainSearch = () => {
@@ -13,16 +11,15 @@ const MainSearch = () => {
     dep: false,
     arr: false,
   });
-  const [cityModalValue, setCityModalValue] = useState({
-    dep: "",
-    arr: "",
-  });
+
   const [seatModalStatus, setSeatModalStatus] = useState(false);
   const [calendarModalStatus, setCalendarModalStatus] = useState(false);
 
   const { adultNum, childrenNum, infantNum } = useSelector(
     (state) => state.seat
   );
+
+  const { departureCity, arrivalCity } = useSelector((state) => state.city);
 
   return (
     <Selectors>
@@ -31,7 +28,7 @@ const MainSearch = () => {
           type="text"
           id="departure"
           placeholder="김포(GMP)"
-          value={cityModalValue.dep}
+          value={departureCity}
           onClick={() => setCityModalStatus({ dep: !cityModalStatus.dep })}
         />
         {cityModalStatus.dep && (
@@ -39,8 +36,6 @@ const MainSearch = () => {
             departure
             cityModalStatus={cityModalStatus}
             setCityModalStatus={setCityModalStatus}
-            cityModalValue={cityModalValue}
-            setCityModalValue={setCityModalValue}
           />
         )}
         <button>
@@ -50,7 +45,7 @@ const MainSearch = () => {
           type="text"
           id="arrival"
           placeholder="도착지가 어디인가요?"
-          value={cityModalValue.arr}
+          value={arrivalCity}
           onClick={() => setCityModalStatus({ arr: !cityModalStatus.arr })}
         />
         {cityModalStatus.arr && (
@@ -58,8 +53,6 @@ const MainSearch = () => {
             arrival
             cityModalStatus={cityModalStatus}
             setCityModalStatus={setCityModalStatus}
-            cityModalValue={cityModalValue}
-            setCityModalValue={setCityModalValue}
           />
         )}
       </CitySelector>
@@ -76,13 +69,13 @@ const MainSearch = () => {
             <i class="fas fa-chevron-down" />
           </button>
         </SeatTitle>
+        {seatModalStatus && (
+          <SeatContainer
+            setSeatModalStatus={setSeatModalStatus}
+            seatModalStatus={seatModalStatus}
+          />
+        )}
       </SeatSelector>
-      {seatModalStatus && (
-        <SeatContainer
-          setSeatModalStatus={setSeatModalStatus}
-          seatModalStatus={seatModalStatus}
-        />
-      )}
     </Selectors>
   );
 };

@@ -11,7 +11,6 @@ import GlobalStyle from "./Styles/globalStyles";
 import "../src/Pages/Airline/SlideCard/SlideCard";
 
 const store = createStore(rootReducer, composeWithDevTools());
-console.log(store.getState());
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import ArrTable from "./ArrTable";
+import CityContainer from "../../../containers/CityContainer";
 import styled from "styled-components";
 
 const CityModal = ({
@@ -8,8 +8,6 @@ const CityModal = ({
   departure,
   setCityModalStatus,
   cityModalStatus,
-  cityModalValue,
-  setCityModalValue,
 }) => {
   const closeModal = () => {
     departure
@@ -34,12 +32,7 @@ const CityModal = ({
           </div>
           <h5>주요도시 바로 선택</h5>
           <CityArea>
-            <ArrTable
-              departure={departure}
-              arrival={arrival}
-              cityModalValue={cityModalValue}
-              setCityModalValue={setCityModalValue}
-            />
+            <CityContainer departure={departure} arrival={arrival} />
           </CityArea>
         </ModalBox>
       </CitySearchModal>

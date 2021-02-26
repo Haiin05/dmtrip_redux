@@ -1,8 +1,14 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import styled from "styled-components";
 
 function RecentSearch() {
+  const { adultNum, childrenNum, infantNum } = useSelector(
+    (state) => state.seat
+  );
+
   return (
     <Wrapper>
       <div>최근 검색한 항공권</div>
@@ -17,7 +23,10 @@ function RecentSearch() {
             <i class="fas fa-exchange-alt"></i>
             <span>제주 (CJU)</span>
           </Trip>
-          <div className="tripDetail">1월 10일 - 1월 16일 • 성인1 • 전체</div>
+          <div className="tripDetail">
+            1월 10일 - 1월 16일 • 성인{adultNum} • 소아{childrenNum} • 유아
+            {infantNum} • 전체
+          </div>
         </RecentBox>
       </RecentBoxWrapper>
     </Wrapper>

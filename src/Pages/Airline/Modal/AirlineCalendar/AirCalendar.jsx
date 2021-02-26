@@ -1,52 +1,52 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import "react-dates/initialize";
-import { DateRangePicker } from "react-dates";
-import "./datePicker.css";
+import React, { useState } from "react";
+import DatePicker, { registerLocale } from "react-datepicker";
+import ko from "date-fns/locale/ko";
 import styled from "styled-components";
+import "react-datepicker/dist/react-datepicker-cssmodules.css";
+import "react-datepicker/dist/react-datepicker.css";
 
-class AirCalendar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      startDate: null,
-      endDate: null,
-    };
-  }
+registerLocale("ko", ko);
 
-  render() {
-    const { startDate, endDate } = this.state;
-    const { openCalendarLayer } = this.props;
-    return (
-      <>
-        {openCalendarLayer && <ModalLayer />}
-        <DateRangePicker
-          startDatePlaceholderText="가는날 선택"
-          endDatePlaceholderText="오는날 선택"
-          startDate={startDate} //
-          startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-          endDate={endDate} //
-          endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-          onDatesChange={({ startDate, endDate }) =>
-            this.setState({ startDate, endDate })
-          } // PropTypes.func.isRequired,
-          minDate={startDate}
-          focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-          onFocusChange={(focusedInput) => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+const AirCalendar = () => {
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  console.log(startDate, endDate);
+  return (
+    <>
+      <DatePickerWrapper>
+        <DatePicker
+          locale="ko"
+          shouldCloseOnSelect={false}
+          dateFormat="yyyy.MM.dd(eee)"
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate}
         />
-      </>
-    );
-  }
-}
+        <DatePicker
+          locale="ko"
+          shouldCloseOnSelect={false}
+          dateFormat="yyyy.MM.dd(eee)"
+          selected={endDate}
+          onChange={(date) => setEndDate(date)}
+          selectsEnd
+          startDate={startDate}
+          endDate={endDate}
+          minDate={startDate}
+        />
+      </DatePickerWrapper>
+    </>
+  );
+};
 
-export default withRouter(AirCalendar);
+export default AirCalendar;
 
-const ModalLayer = styled.div`
-  width: 100%;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 98;
-  background: rgba(0, 0, 0, 0.4);
+const DatePickerWrapper = styled.div`
+  width: 290px;
+  height: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
 `;
