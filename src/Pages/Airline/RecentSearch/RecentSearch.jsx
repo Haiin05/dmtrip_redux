@@ -9,6 +9,12 @@ function RecentSearch() {
     (state) => state.seat
   );
 
+  const { departureCity, arrivalCity } = useSelector((state) => state.city);
+
+  const { startMonthNum, startDateNum, endMonthNum, endDateNum } = useSelector(
+    (state) => state.city
+  );
+
   return (
     <Wrapper>
       <div>최근 검색한 항공권</div>
@@ -19,12 +25,13 @@ function RecentSearch() {
             <i class="fas fa-times"></i>
           </TripBox>
           <Trip>
-            <span>김포 (GMP)</span>
+            <span>{departureCity}</span>
             <i class="fas fa-exchange-alt"></i>
-            <span>제주 (CJU)</span>
+            <span>{arrivalCity}</span>
           </Trip>
           <div className="tripDetail">
-            1월 10일 - 1월 16일 • 성인{adultNum} • 소아{childrenNum} • 유아
+            {startMonthNum}월 {startDateNum}일 - {endMonthNum}월 {endDateNum}일
+            • 성인{adultNum} • 소아{childrenNum} • 유아
             {infantNum} • 전체
           </div>
         </RecentBox>

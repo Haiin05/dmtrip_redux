@@ -1,10 +1,12 @@
-import { combineReducers } from "redux"; //리듀서들을 합치는 일을 한다.
+import { combineReducers } from "redux";
 import city from "./city";
 import seat from "./seat";
+import date from "./date";
 
 const rootReducer = combineReducers({
   city,
   seat,
+  date,
 });
 
 export default rootReducer;

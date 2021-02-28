@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import AirCalendar from "../Modal/AirlineCalendar/AirCalendar";
 import CityModal from "../Modal/CityModal";
 import SeatContainer from "../../../containers/SeatContainer";
+import DateContainer from "../../../containers/DateContainer";
 import styled from "styled-components";
 
 const MainSearch = () => {
@@ -27,7 +28,7 @@ const MainSearch = () => {
         <input
           type="text"
           id="departure"
-          placeholder="김포(GMP)"
+          placeholder="김포"
           value={departureCity}
           onClick={() => setCityModalStatus({ dep: !cityModalStatus.dep })}
         />
@@ -57,7 +58,7 @@ const MainSearch = () => {
         )}
       </CitySelector>
       <div onClick={() => setCalendarModalStatus(!calendarModalStatus)}>
-        <AirCalendar calendarModalStatus={calendarModalStatus} />
+        <DateContainer />
       </div>
       <SeatSelector>
         <SeatTitle onClick={() => setSeatModalStatus(!seatModalStatus)}>
