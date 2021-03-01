@@ -3,12 +3,7 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
-const ArrTable = ({
-  departure,
-  arrival,
-  handleArrivalCity,
-  handleDepartureCity,
-}) => {
+const ArrTable = ({ type, handleArrivalCity, handleDepartureCity }) => {
   const [tableList, gettableList] = useState([]);
 
   useEffect(() => {
@@ -22,11 +17,11 @@ const ArrTable = ({
   };
 
   const handleCityValue = (city) => {
-    departure ? handleDepartureCity(city) : handleArrivalCity(city);
+    type === "departure" ? handleDepartureCity(city) : handleArrivalCity(city);
   };
 
   return (
-    <ArrTableWrapper departure={departure} arrival={arrival}>
+    <ArrTableWrapper type={type}>
       {tableList?.map((location, index) => {
         return (
           <Wrap key={index}>

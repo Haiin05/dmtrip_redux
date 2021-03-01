@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ArrTable from "../Pages/Airline/Modal/ArrTable";
 import { departureLocation, arrivalLocation } from "../modules/city";
 
-function CityContainer({ departure, arrival }) {
+function CityContainer({ type }) {
   const { departureCity, arrivalCity } = useSelector((state) => ({
     departureCity: state.city.departureCity,
     arrivalCity: state.city.arrivalCity,
@@ -19,8 +19,7 @@ function CityContainer({ departure, arrival }) {
       arrivalCity={arrivalCity}
       handleDepartureCity={handleDepartureCity}
       handleArrivalCity={handleArrivalCity}
-      departure={departure}
-      arrival={arrival}
+      type={type}
     />
   );
 }

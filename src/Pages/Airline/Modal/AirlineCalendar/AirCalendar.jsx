@@ -18,13 +18,12 @@ const AirCalendar = ({ handleSetStartDate, handleSetEndDate }) => {
     let endDay = endDate.getDate();
     handleSetStartDate(startMonth, startDay);
     handleSetEndDate(endMonth, endDay);
-    console.log(startMonth, startDay, endMonth, endDay);
   };
 
   useEffect(() => {
     handleDate();
   }, [startDate, endDate]);
-  console.log(startDate, endDate);
+
   return (
     <DatePickersWrapper>
       <DatePickerWrapper>

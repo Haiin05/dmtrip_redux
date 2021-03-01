@@ -3,22 +3,17 @@ import { withRouter } from "react-router-dom";
 import CityContainer from "../../../containers/CityContainer";
 import styled from "styled-components";
 
-const CityModal = ({
-  arrival,
-  departure,
-  setCityModalStatus,
-  cityModalStatus,
-}) => {
+const CityModal = ({ modalStatus, setModalStatus, type }) => {
   const closeModal = () => {
-    departure
-      ? setCityModalStatus(!cityModalStatus.dep)
-      : setCityModalStatus(!cityModalStatus.arr);
+    type === "departure"
+      ? setModalStatus(!modalStatus.dep)
+      : setModalStatus(!modalStatus.arr);
   };
 
   return (
     <>
       <ModalLayer />
-      <CitySearchModal arrival={arrival} departure={departure}>
+      <CitySearchModal type={type}>
         <div className="modalTitle">
           <h4>도시 선택</h4>
           <button onClick={closeModal}>
@@ -32,7 +27,7 @@ const CityModal = ({
           </div>
           <h5>주요도시 바로 선택</h5>
           <CityArea>
-            <CityContainer departure={departure} arrival={arrival} />
+            <CityContainer type={type} />
           </CityArea>
         </ModalBox>
       </CitySearchModal>

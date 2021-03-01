@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
+import SeatList from "./components/SeatList";
 
 const SeatModal = ({
-  seatModalStatus,
-  setSeatModalStatus,
+  setModalStatus,
+  modalStatus,
   adultNum,
   childrenNum,
   infantNum,
@@ -15,50 +16,51 @@ const SeatModal = ({
   onDecreaseChildrenNum,
   onDecreaseInfantNum,
 }) => {
+  const seatListData = {
+    data: [
+      {
+        type: "성인",
+        typeDetail: "만 12세 이상",
+        number: adultNum,
+        onIncrease: onIncreaseAdultNum,
+        onDecrease: onDecreaseAdultNum,
+      },
+      {
+        type: "소아",
+        typeDetail: "만 12세 미만",
+        number: childrenNum,
+        onIncrease: onIncreaseChildrenNum,
+        onDecrease: onDecreaseChildrenNum,
+      },
+      {
+        type: "유아",
+        typeDetail: "24개월 미만",
+        number: infantNum,
+        onIncrease: onIncreaseInfantNum,
+        onDecrease: onDecreaseInfantNum,
+      },
+    ],
+  };
+  useEffect(() => {
+    handleAlert();
+  }, [adultNum, childrenNum, infantNum]);
+
+  const handleAlert = () => {
+    adultNum + childrenNum + infantNum === 8 &&
+      alert("좌석예약은 8명까지 가능합니다.");
+  };
   return (
     <>
       <ModalLayer />
       <SeatModalWrapper>
         <Header>
           <h1>인원 & 좌석등급</h1>
-          <button onClick={() => setSeatModalStatus(!seatModalStatus)}>
+          <button onClick={() => setModalStatus(!modalStatus)}>
             <i class="fas fa-times" />
           </button>
         </Header>
         <Body>
-          <List>
-            <Title>
-              <div>성인</div>
-              <div>만 12세 이상</div>
-            </Title>
-            <Num>
-              <i class="far fa-minus-square" onClick={onDecreaseAdultNum} />
-              <span>{adultNum}</span>
-              <i class="far fa-plus-square" onClick={onIncreaseAdultNum} />
-            </Num>
-          </List>
-          <List>
-            <Title>
-              <div>소아</div>
-              <div>만 12세 미만</div>
-            </Title>
-            <Num>
-              <i class="far fa-minus-square" onClick={onDecreaseChildrenNum} />
-              <span>{childrenNum}</span>
-              <i class="far fa-plus-square" onClick={onIncreaseChildrenNum} />
-            </Num>
-          </List>
-          <List>
-            <Title>
-              <div>유아</div>
-              <div>24개월 미만</div>
-            </Title>
-            <Num>
-              <i class="far fa-minus-square" onClick={onDecreaseInfantNum} />
-              <span>{infantNum}</span>
-              <i class="far fa-plus-square" onClick={onIncreaseInfantNum} />
-            </Num>
-          </List>
+          <SeatList format={seatListData} />
         </Body>
       </SeatModalWrapper>
     </>
@@ -115,48 +117,4 @@ const Body = styled.div`
   width: 344px;
   height: 257px;
   padding: 0 24px 24px 24px;
-`;
-
-const List = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
-
-  i {
-    cursor: pointer;
-  }
-`;
-
-const Title = styled.div`
-  width: 60px;
-  height: 34px;
-
-  div:first-child {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-
-  div:last-child {
-    font-size: 11px;
-    color: ${({ theme }) => theme.Color.grey[400]};
-  }
-`;
-
-const Num = styled.div`
-  width: 100px;
-  height: 34px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  i,
-  span {
-    font-size: 18px;
-  }
-
-  i {
-    font-size: 26px;
-    color: ${({ theme }) => theme.Color.blue[400]};
-  }
 `;

@@ -1,8 +1,9 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import styled from "styled-components";
+
+let recentSearchData = {};
 
 function RecentSearch() {
   const { adultNum, childrenNum, infantNum } = useSelector(

@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
-import AirCalendar from "../Modal/AirlineCalendar/AirCalendar";
-import CityModal from "../Modal/CityModal";
+import CityInput from "./components/CityInput";
 import SeatContainer from "../../../containers/SeatContainer";
 import DateContainer from "../../../containers/DateContainer";
 import styled from "styled-components";
 
 const MainSearch = () => {
-  const [cityModalStatus, setCityModalStatus] = useState({
+  const [modalStatus, setModalStatus] = useState({
     dep: false,
     arr: false,
+    seat: false,
+    calendar: false,
   });
-
-  const [seatModalStatus, setSeatModalStatus] = useState(false);
-  const [calendarModalStatus, setCalendarModalStatus] = useState(false);
 
   const { adultNum, childrenNum, infantNum } = useSelector(
     (state) => state.seat
@@ -22,46 +20,39 @@ const MainSearch = () => {
 
   const { departureCity, arrivalCity } = useSelector((state) => state.city);
 
+  const cityInputData = {
+    data: [
+      {
+        type: "text",
+        id: "departure",
+        placeholder: "김포",
+        value: departureCity,
+        onClick: () => setModalStatus({ dep: !modalStatus.dep }),
+        modalStatus: modalStatus.dep,
+      },
+      {
+        type: "text",
+        id: "arrival",
+        placeholder: "도착지가 어디인가요?",
+        value: arrivalCity,
+        onClick: () => setModalStatus({ arr: !modalStatus.arr }),
+        modalStatus: modalStatus.arr,
+      },
+    ],
+  };
+
   return (
     <Selectors>
-      <CitySelector>
-        <input
-          type="text"
-          id="departure"
-          placeholder="김포"
-          value={departureCity}
-          onClick={() => setCityModalStatus({ dep: !cityModalStatus.dep })}
-        />
-        {cityModalStatus.dep && (
-          <CityModal
-            departure
-            cityModalStatus={cityModalStatus}
-            setCityModalStatus={setCityModalStatus}
-          />
-        )}
-        <button>
-          <i class="fas fa-arrows-alt-h" />
-        </button>
-        <input
-          type="text"
-          id="arrival"
-          placeholder="도착지가 어디인가요?"
-          value={arrivalCity}
-          onClick={() => setCityModalStatus({ arr: !cityModalStatus.arr })}
-        />
-        {cityModalStatus.arr && (
-          <CityModal
-            arrival
-            cityModalStatus={cityModalStatus}
-            setCityModalStatus={setCityModalStatus}
-          />
-        )}
-      </CitySelector>
-      <div onClick={() => setCalendarModalStatus(!calendarModalStatus)}>
-        <DateContainer />
-      </div>
+      <CityInput
+        modalStatus={modalStatus}
+        setModalStatus={setModalStatus}
+        format={cityInputData}
+      />
+      <DateContainer
+        onClick={() => setModalStatus({ calendar: !modalStatus.calendar })}
+      />
       <SeatSelector>
-        <SeatTitle onClick={() => setSeatModalStatus(!seatModalStatus)}>
+        <SeatTitle onClick={() => setModalStatus({ seat: !modalStatus.seat })}>
           <div>
             <i class="far fa-user" />
             <span>승객 {adultNum + childrenNum + infantNum}명, 일반석</span>
@@ -70,10 +61,10 @@ const MainSearch = () => {
             <i class="fas fa-chevron-down" />
           </button>
         </SeatTitle>
-        {seatModalStatus && (
+        {modalStatus.seat && (
           <SeatContainer
-            setSeatModalStatus={setSeatModalStatus}
-            seatModalStatus={seatModalStatus}
+            setModalStatus={setModalStatus}
+            modalStatus={modalStatus}
           />
         )}
       </SeatSelector>
