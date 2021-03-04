@@ -10,9 +10,9 @@
 
 ## 🧑‍💻 적용 기술
 
-- Front-end: React.js, React(CRA), React-router, Styled-Components, Hooks
+- Front-end: React.js, React(CRA), React-router, Hooks, Redux, Styled-Components
 
-## 💁‍♀️ 구현 기능
+## 💁‍♀️ 구현 기능 & 리팩토링
 
 #### 항공권
 
@@ -25,9 +25,11 @@
 
 ---
 
+#### 항공권 리팩토링
+
 - 클래스형에서 함수형 컴포넌트로 리팩토링
 - 컴포넌트 재사용 리팩토링
-- 리덕스로 검색데이터 상태관리 리팩토링
+- 리덕스로 도착지, 날짜, 인원수 검색데이터 상태관리 리팩토링
 
 ## 🎥 영상
 

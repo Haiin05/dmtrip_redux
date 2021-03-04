@@ -84,7 +84,7 @@ const SeatModalWrapper = styled.div`
   height: 260px;
   position: absolute;
   top: 280px;
-  left: 900px;
+  left: 650px;
   z-index: 89;
   border: 1px solid ${({ theme }) => theme.Color.white};
   border-radius: 3px;

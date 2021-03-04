@@ -15,7 +15,7 @@ class Airline extends React.Component {
     return (
       <BodyWrapper>
         <SearchArea />
-        <RecentSearch />
+        {/* <RecentSearch /> */}
         <SlideCard />
       </BodyWrapper>
     );
